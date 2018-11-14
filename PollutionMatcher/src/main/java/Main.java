@@ -3,6 +3,7 @@ import org.springframework.boot.autoconfigure.*;
 import org.springframework.web.bind.annotation.*;
 
 import io.nats.client.*;
+import java.time.Duration;
 
 import java.nio.charset.StandardCharsets;
 
