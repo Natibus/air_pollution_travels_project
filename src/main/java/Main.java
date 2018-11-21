@@ -9,10 +9,10 @@ import io.nats.client.Nats;
 @EnableAutoConfiguration
 
 public class Main {
-	@RequestMapping("/")
+	/*@RequestMapping("/")
 	String home() {
 		return "Hello World!";
-	}
+	}*/
 
 	public static void main(String[] args) throws Exception
 	{
