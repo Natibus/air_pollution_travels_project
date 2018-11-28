@@ -5,8 +5,13 @@ import org.springframework.web.bind.annotation.*;
 import io.nats.client.*;
 import java.time.Duration;
 import java.util.Arrays;
+import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 
 @RestController
 @EnableAutoConfiguration
@@ -37,6 +42,30 @@ public class MapMatcher {
 
 		nats.close();
 		System.out.println("Connected to " + nats.getConnectedUrl());
+		getJson("/home/alex/Bureau/workspace/git/test.json");
+	}
+	
+	private static void getJson(String filename)
+	{
+		System.out.println("test");
+		JsonObject jsonObject = new JsonObject();
+		Message message = null;
+		try
+		{
+			JsonParser parser = new JsonParser();
+			JsonElement jsonElement = parser.parse(new FileReader(filename));
+			jsonObject = jsonElement.getAsJsonObject();
+			message = new Message(jsonObject);
+		}
+		catch(JsonSyntaxException e)
+		{
+			System.out.println("json format is wrong");
+		}
+		catch (Exception e)
+		{
+			e.printStackTrace();
+		}
+		System.out.println(message.toString());
 	}
 	
 }
