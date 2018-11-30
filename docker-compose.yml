@@ -1,0 +1,39 @@
+version: "2"
+
+services:
+  nats:
+    image: 'nats:0.8.0'
+    entrypoint: "/gnatsd -DV"
+    expose:
+      - "4222"
+    ports:
+      - "8222:8222"
+    hostname: nats-server
+  mapmatcher:
+    container_name: iosl_spring_mapmatcher
+    environment:
+      - "NATS_URI=nats://nats:4222"
+    build:
+      context: .
+      dockerfile : Dockerfile
+    volumes:
+      - ./target:/target
+  # osrm-server: 
+  #   image: osrm/osrm-backend
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile.osrm
+  #   ports:
+  #     - 5000:5000
+  #   command: bash -c "osrm-routed --algorithm mld berlin-latest.osrm"
+  
+
+  # ----------------- notes --------------------------------
+  # have 2 docker compose files (one for our project specific and one for all projects)
+  # decide if database is in or out
+  # 19 december : convince people, show something
+  # find a tool for nats printing
+  # write documentation !
+  # mongo db for buffering
+  # implémenter client web nodejs visualisation chaque queue de nats
+  # outil polygone postgis
