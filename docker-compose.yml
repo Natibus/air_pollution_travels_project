@@ -18,6 +18,7 @@ services:
       dockerfile : Dockerfile
     volumes:
       - ./MapMatcher/target:/target
+      - ./MapMatcher/data:/data
   pollutionmatcher:
     container_name: iosl_spring_pollution_matcher
     environment:

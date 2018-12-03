@@ -3,9 +3,11 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 //import org.springframework.boot.autoconfigure.amqp.RabbitProperties.Cache.Connection;
 import org.springframework.web.bind.annotation.RestController;
 
-import io.nats.client.Connection;
-import io.nats.client.Nats;
+import io.nats.client.*;
 
+import java.time.Duration;
+
+import java.nio.charset.StandardCharsets;
 
 @RestController
 @EnableAutoConfiguration
@@ -17,16 +19,20 @@ public class PollutionMatcher {
 
 	public static void main(String[] args) throws Exception
 	{
-		SpringApplication.run(MapMatcher.class, args);
+		SpringApplication.run(PollutionMatcher.class, args);
 		String natsUrl = System.getenv().get("NATS_URI");
 		Connection nats = Nats.connect(natsUrl);
 		
 		// Connection nats = Nats.connect("demo.nats.io");
 
-		System.out.println("Connected to " + nats.getConnectedUrl());
-
+		Subscription sub = nats.subscribe("Spring_jobQueue1");
+		
+		Message msg = sub.nextMessage(Duration.ZERO);
+		String str = new String(msg.getData(), StandardCharsets.UTF_8);
+		
+		System.out.println("received <"+str+">");
+		
 		nats.close();
-
 		System.out.println("Connected to " + nats.getConnectedUrl());
 	}
 	
