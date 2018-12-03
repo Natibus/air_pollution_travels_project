@@ -1,23 +1,32 @@
 version: "2"
 
 services:
-  nats:
-    image: 'nats:0.8.0'
-    entrypoint: "/gnatsd -DV"
-    expose:
-      - "4222"
-    ports:
-      - "8222:8222"
-    hostname: nats-server
+  # nats:
+  #   image: 'nats:0.8.0'
+  #   entrypoint: "/gnatsd -DV"
+  #   expose:
+  #     - "4222"
+  #   ports:
+  #     - "8222:8222"
+  #   hostname: nats-server
   mapmatcher:
-    container_name: iosl_spring_mapmatcher
+    container_name: iosl_spring_map_matcher
     environment:
-      - "NATS_URI=nats://nats:4222"
+      - "NATS_URI=nats://nats:IoslProject2018@iosl2018hxqma76gup7si-vm0.westeurope.cloudapp.azure.com:4222"
     build:
-      context: .
+      context: ./MapMatcher/
       dockerfile : Dockerfile
     volumes:
-      - ./target:/target
+      - ./MapMatcher/target:/target
+  pollutionmatcher:
+    container_name: iosl_spring_pollution_matcher
+    environment:
+      - "NATS_URI=nats://nats:IoslProject2018@iosl2018hxqma76gup7si-vm0.westeurope.cloudapp.azure.com:4222"
+    build:
+      context: ./PollutionMatcher/
+      dockerfile : Dockerfile
+    volumes:
+      - ./PollutionMatcher/target:/target
   # osrm-server: 
   #   image: osrm/osrm-backend
   #   build:
