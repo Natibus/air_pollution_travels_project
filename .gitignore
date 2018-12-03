@@ -23,3 +23,10 @@
 /dist/
 /nbdist/
 /.nb-gradle/
+
+### Custom ###
+MapMatcher/target/
+PollutionMatcher/target/
+bin/
+.settings/
+.vscode/

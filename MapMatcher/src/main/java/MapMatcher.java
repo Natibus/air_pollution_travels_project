@@ -1,33 +1,36 @@
-import org.springframework.boot.*;
-import org.springframework.boot.autoconfigure.*;
-import org.springframework.web.bind.annotation.*;
-
-import io.nats.client.*;
-import java.time.Duration;
-import java.util.Arrays;
 import java.io.FileReader;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.util.Arrays;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
+import org.springframework.boot.*;
+import org.springframework.boot.autoconfigure.*;
+import org.springframework.web.bind.annotation.*;
+
+import io.nats.client.Connection;
+import io.nats.client.Nats;
+
+
 @RestController
 @EnableAutoConfiguration
 public class MapMatcher {
-	@RequestMapping("/")
+	/*@RequestMapping("/")
 	String home() {
 		return "Hello World!";
-	}
+	}*/
 
 	public static void main(String[] args) throws Exception
 	{
 		SpringApplication.run(MapMatcher.class, args);
-		Connection nats = Nats.connect("nats://nats:IoslProject2018@iosl2018hxqma76gup7si-vm0.westeurope.cloudapp.azure.com:4222");
-		System.out.println("Connected to " + nats.getConnectedUrl());
-		//String test = "hello world";
-
+		String natsUrl = System.getenv().get("NATS_URI");
+		Connection nats = Nats.connect(natsUrl);
+		
 		RouteGson route = new RouteGson(
 			1,
 			Arrays.asList("Apocalypto", "Beatdown", "Wind Walkers")
@@ -42,7 +45,10 @@ public class MapMatcher {
 
 		nats.close();
 		System.out.println("Connected to " + nats.getConnectedUrl());
-		getJson("/home/alex/Bureau/workspace/git/test.json");
+		// Properties props = new Properties();
+		// props.load(this.getClass().getResourceAsStream("project.properties"));
+		// String basedir = props.get("project.basedir");
+		getJson("/data/test.json");
 	}
 	
 	private static void getJson(String filename)
