@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import io.nats.client.Connection;
 import io.nats.client.Nats;
+import io.nats.client.Subscription;
 
 
 @RestController
@@ -26,29 +27,39 @@ public class MapMatcher {
 	}*/
 
 	public static void main(String[] args) throws Exception
-	{
+	{ //nats://nats:IoslProject2018@iosl2018hxqma76gup7si-vm0.westeurope.cloudapp.azure.com:4222
 		SpringApplication.run(MapMatcher.class, args);
 		String natsUrl = System.getenv().get("NATS_URI");
 		Connection nats = Nats.connect(natsUrl);
+		// Subscribe
+		Subscription sub = nats.subscribe("toll-simulator");
 		
-		RouteGson route = new RouteGson(
+		System.out.println("subscribed to : " + sub.getSubject());
+		// Read a message
+		io.nats.client.Message msg = sub.nextMessage(Duration.ZERO);
+		String str = new String(msg.getData(), StandardCharsets.UTF_8);
+		
+		getJson(str);
+		
+		
+		/*RouteGson route = new RouteGson(
 			1,
 			Arrays.asList("Apocalypto", "Beatdown", "Wind Walkers")
-		);
+		);*/
 		// ArrayList test = "hello world";
 		// Gson gson = new GsonBuilder().create();
-		String serializedRoute = new Gson().toJson(route);
+		//String serializedRoute = new Gson().toJson(route);
 
-		nats.publish("Spring_jobQueue1", serializedRoute.getBytes(StandardCharsets.UTF_8));
+		/*nats.publish("Spring_jobQueue1", serializedRoute.getBytes(StandardCharsets.UTF_8));
 		nats.flush(Duration.ZERO);
-		System.out.println("message sent : <"+serializedRoute+">");
+		System.out.println("message sent : <"+serializedRoute+">");*/
 
 		nats.close();
 		System.out.println("Connected to " + nats.getConnectedUrl());
 		// Properties props = new Properties();
 		// props.load(this.getClass().getResourceAsStream("project.properties"));
 		// String basedir = props.get("project.basedir");
-		getJson("/data/test.json");
+		//getJson("/data/test.json");
 	}
 	
 	private static void getJson(String filename)

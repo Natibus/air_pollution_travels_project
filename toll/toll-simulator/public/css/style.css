@@ -1,0 +1,31 @@
+.mdl-layout {
+  background: url('../images/map.svg');
+  background-size: 30%;
+  background-repeat: no-repeat;
+  background-position: 90% 80%;
+}
+
+@media screen and (max-width: 1024px) {
+  .mdl-layout__header {
+    display: block;
+  }
+
+  .mdl-layout {
+    background-size: 40%;
+    background-position: 90% 90%;
+  }
+
+}
+
+.mdl-layout__header-row {
+  padding-left: 40px;
+}
+
+.mdl-layout__content {
+  padding: 16px 40px;
+}
+
+.services-header {
+  font-size: 18px;
+}
+

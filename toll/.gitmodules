@@ -1,0 +1,9 @@
+[submodule "toll-simulator"]
+	path = toll-simulator
+	url = git@gitlab.tubit.tu-berlin.de:mathiasmoeller/toll-simulator.git
+[submodule "hemera-microservices"]
+	path = hemera-microservices
+	url = git@gitlab.tubit.tu-berlin.de:benyaminsh/hemera-microservices.git
+[submodule "poll-dashboard"]
+	path = poll-dashboard
+	url = git@gitlab.tubit.tu-berlin.de:mathiasmoeller/poll-dashboard.git
