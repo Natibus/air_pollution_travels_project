@@ -26,3 +26,10 @@
 
 ### Java ###
 *.class
+
+### Custom ###
+MapMatcher/target/
+PollutionMatcher/target/
+bin/
+.settings/
+.vscode/
