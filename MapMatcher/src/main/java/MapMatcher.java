@@ -29,7 +29,7 @@ public class MapMatcher {
 	public static void main(String[] args) throws Exception
 	{ //nats://nats:IoslProject2018@iosl2018hxqma76gup7si-vm0.westeurope.cloudapp.azure.com:4222
 		SpringApplication.run(MapMatcher.class, args);
-		String natsUrl = System.getenv().get("NATS_URI");
+		String natsUrl = System.getenv().get("NATS_URL");
 		Connection nats = Nats.connect(natsUrl);
 		// Subscribe
 		Subscription sub = nats.subscribe("toll-simulator");

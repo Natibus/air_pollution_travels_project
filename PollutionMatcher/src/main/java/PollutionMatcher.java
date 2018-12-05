@@ -20,7 +20,7 @@ public class PollutionMatcher {
 	public static void main(String[] args) throws Exception
 	{
 		SpringApplication.run(PollutionMatcher.class, args);
-		String natsUrl = System.getenv().get("NATS_URI");
+		String natsUrl = System.getenv().get("NATS_URL");
 		Connection nats = Nats.connect(natsUrl);
 		
 		// Connection nats = Nats.connect("demo.nats.io");

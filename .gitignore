@@ -33,3 +33,5 @@ PollutionMatcher/target/
 bin/
 .settings/
 .vscode/
+.mvn/
+.project
