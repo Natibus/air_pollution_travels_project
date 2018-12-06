@@ -1,9 +1,12 @@
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.FileReader;
-import java.nio.charset.StandardCharsets;
-import java.time.Duration;
-import java.util.Arrays;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -34,13 +37,42 @@ public class MapMatcher {
 		// Subscribe
 		Subscription sub = nats.subscribe("toll-simulator");
 		
-		System.out.println("subscribed to : " + sub.getSubject());
+//		System.out.println("subscribed to : " + sub.getSubject());
 		// Read a message
-		io.nats.client.Message msg = sub.nextMessage(Duration.ZERO);
-		String str = new String(msg.getData(), StandardCharsets.UTF_8);
-		
-		getJson(str);
-		
+//		io.nats.client.Message msg = sub.nextMessage(Duration.ZERO);
+//		String str = new String(msg.getData(), StandardCharsets.UTF_8);
+//
+//		getJson(str);
+
+		String osrmUrl = System.getenv().get("OSRM_URL");
+		URL url = new URL(osrmUrl);
+		HttpURLConnection con = (HttpURLConnection) url.openConnection();
+		con.setRequestMethod("GET");
+		//http://router.project-osrm.org/route/v1/driving/13.388860,52.517037;13.397634,52.529407;13.428555,52.523219?overview=false
+
+		Map<String, String> parameters = new HashMap<>();
+		parameters.put("service", "route");
+		parameters.put("version", "v1");
+		parameters.put("profile", "driving");
+		parameters.put("coordinates", "13.388860,52.517037;13.397634,52.529407;13.428555,52.523219");
+
+		con.setDoOutput(true);
+//		con.setRequestProperty("Content-Type", "application/json");
+		DataOutputStream out = new DataOutputStream(con.getOutputStream());
+		out.writeBytes(ParameterStringBuilder.getParamsString(parameters));
+		out.flush();
+		out.close();
+
+		int status = con.getResponseCode();
+		BufferedReader in = new BufferedReader(
+				new InputStreamReader(con.getInputStream()));
+		String inputLine;
+		StringBuffer content = new StringBuffer();
+		while ((inputLine = in.readLine()) != null) {
+			content.append(inputLine);
+		}
+		System.out.println("response : " + content);
+		in.close();
 		
 		/*RouteGson route = new RouteGson(
 			1,
